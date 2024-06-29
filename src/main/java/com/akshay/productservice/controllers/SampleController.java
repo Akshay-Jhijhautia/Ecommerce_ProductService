@@ -14,7 +14,7 @@ public class SampleController {
 
     @GetMapping("/hello/{name}/{times}")
     public String[] sayHello(@PathVariable("name") String name,
-                           @PathVariable("times") int times) {
+                             @PathVariable("times") int times) {
         String[] result = new String[times];
         Arrays.fill(result, name);
         return result;
