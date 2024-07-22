@@ -2,10 +2,7 @@ package com.akshay.productservice.controllers;
 
 import com.akshay.productservice.models.Product;
 import com.akshay.productservice.services.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -26,5 +23,20 @@ public class ProductController {
     @GetMapping()
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable("id") Long productId) {
+
+    }
+
+    @PatchMapping("/{id}")
+    public Product updateProduct(@PathVariable("id") Long productId,@RequestBody Product product) {
+        return productService.updateProduct(productId,product);
+    }
+
+    @PutMapping("/{id}")
+    public Product replaceProduct(@PathVariable("id") Long productId,@RequestBody Product product) {
+        return product;
     }
 }
