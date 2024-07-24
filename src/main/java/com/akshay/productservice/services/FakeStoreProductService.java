@@ -1,6 +1,7 @@
 package com.akshay.productservice.services;
 
 import com.akshay.productservice.dtos.FakeStoreProductDto;
+import com.akshay.productservice.exceptions.ProductNotFoundException;
 import com.akshay.productservice.models.Category;
 import com.akshay.productservice.models.Product;
 import org.springframework.http.HttpMethod;
@@ -20,12 +21,16 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product getSingleProduct(Long productId) {
+    public Product getSingleProduct(Long productId) throws ProductNotFoundException{
         // Call fake store to fetch the product with given id
         FakeStoreProductDto  fakeStoreProductDto = restTemplate.getForObject(
                 "https://fakestoreapi.com/products/" + productId,
                 FakeStoreProductDto.class
         );
+
+        if(fakeStoreProductDto == null) {
+            throw new ProductNotFoundException("Product with " + productId + " does not exist");
+        }
         // Convert FakeStoreDto into Product
        return convertFakeStoreProductToProduct(fakeStoreProductDto);
     }
