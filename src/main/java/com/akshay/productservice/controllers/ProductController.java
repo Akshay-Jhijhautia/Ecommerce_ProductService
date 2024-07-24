@@ -19,8 +19,11 @@ public class ProductController {
         this.productService = productService;
     }
 
+    ExceptionDto exceptionDto = new ExceptionDto();
+
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
+        exceptionDto.setId(id);
         return new ResponseEntity<>(
                 productService.getSingleProduct(id),
                 HttpStatus.OK
@@ -53,11 +56,8 @@ public class ProductController {
         return product;
     }
 
-    // This exception handler is local to this controller only
-    // Sending Custom Error Message
     @ExceptionHandler(ArithmeticException.class)
     public ResponseEntity<ExceptionDto> handleArithmeticExceptions() {
-        ExceptionDto exceptionDto = new ExceptionDto();
         exceptionDto.setMessage("Arithmetic Exception Has Occurred");
         exceptionDto.setSolution("Please try again later");
 
@@ -69,7 +69,6 @@ public class ProductController {
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<ExceptionDto> handleProductNotFoundException() {
-        ExceptionDto exceptionDto = new ExceptionDto();
         exceptionDto.setMessage("Product Not Found");
         exceptionDto.setSolution("Please Try again with valid Id");
 

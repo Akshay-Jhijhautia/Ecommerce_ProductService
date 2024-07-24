@@ -1,5 +1,6 @@
 package com.akshay.productservice.services;
 
+import com.akshay.productservice.dtos.ExceptionDto;
 import com.akshay.productservice.dtos.FakeStoreProductDto;
 import com.akshay.productservice.exceptions.ProductNotFoundException;
 import com.akshay.productservice.models.Category;
@@ -22,7 +23,6 @@ public class FakeStoreProductService implements ProductService{
 
     @Override
     public Product getSingleProduct(Long productId) throws ProductNotFoundException{
-        // Call fake store to fetch the product with given id
         FakeStoreProductDto  fakeStoreProductDto = restTemplate.getForObject(
                 "https://fakestoreapi.com/products/" + productId,
                 FakeStoreProductDto.class
@@ -31,18 +31,15 @@ public class FakeStoreProductService implements ProductService{
         if(fakeStoreProductDto == null) {
             throw new ProductNotFoundException("Product with " + productId + " does not exist");
         }
-        // Convert FakeStoreDto into Product
        return convertFakeStoreProductToProduct(fakeStoreProductDto);
     }
 
     @Override
     public List<Product> getAllProducts() {
-        // Call fake store to get data of all products
         FakeStoreProductDto[] fakeStoreProductDtoList = restTemplate.getForObject(
                 "https://fakestoreapi.com/products",
                 FakeStoreProductDto[].class
         );
-        // Convert List of FakeStoreProductDto to product
         List<Product> products = new ArrayList<>();
         for (FakeStoreProductDto fakeStoreProductDto: fakeStoreProductDtoList) {
             products.add(convertFakeStoreProductToProduct(fakeStoreProductDto));
