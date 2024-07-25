@@ -39,8 +39,11 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Long productId) {
-
+    public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long productId) {
+        return new ResponseEntity<>(
+                productService.deleteProduct(productId),
+                HttpStatus.OK
+        );
     }
 
     @PatchMapping("/{id}")
@@ -52,8 +55,11 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product replaceProduct(@PathVariable("id") Long productId,@RequestBody Product product) {
-        return product;
+    public ResponseEntity<Product> replaceProduct(@PathVariable("id") Long productId,@RequestBody Product product) {
+        return new ResponseEntity<>(
+                productService.replaceProduct(productId,product),
+                HttpStatus.OK
+        );
     }
 
     @ExceptionHandler(ArithmeticException.class)
